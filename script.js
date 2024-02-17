@@ -5,10 +5,8 @@ Your goal is to analyze and transform this data such that the output of your pro
 {
     // the ID of the learner for which this data has been collected
     "id": number,
-    // the learner’s total, weighted average, in which assignments
-    // with more points_possible should be counted for more
-    // e.g. a learner with 50/100 on one assignment and 190/200 on another
-    // would have a weighted average score of 240/300 = 80%.
+    // the learner’s total, weighted average, in which assignment with more points_possible should be counted for more
+    // e.g. a learner with 50/100 on one assignment and 190/200 on another would have a weighted average score of 240/300 = 80%.
     "avg": number,
     // each assignment should have a key with its ID,
     // and the value associated with it should be the percentage that
@@ -56,7 +54,6 @@ const CourseInfo = {
     ]
   };
 
-//LearnerSubmissions[i].submission.score
   const LearnerSubmissions = [
     {
       learner_id: 125,
@@ -101,22 +98,54 @@ const CourseInfo = {
   ];
 
 
-  //find function will help a lot
 
-const name = [];
+//pulling everything out of the arrays
+
+const learnName = [];
 const assignment = [1,2,3];
 const grade = [];
+const assignmentTotal = []
 
 for(let i=0; i<LearnerSubmissions.length; i++){
-  name.push(LearnerSubmissions[i].learner_id);
+  learnName.push(LearnerSubmissions[i].learner_id);
 }
 for(let i=0; i<LearnerSubmissions.length; i++){
   grade.push(LearnerSubmissions[i].submission.score);
 }
+for(let i=0; i<AssignmentGroup.assignments.length; i++){
+  assignmentTotal.push(AssignmentGroup.assignments[i].points_possible);
+}
 
+let average1 = 0;
 
-console.log(name);
-console.log(grade);
+/* 
+learnName[i];
+
+if(learnName[i] != 125){
+  let average2 = 0
+  copy of code
+}
+
+*/
+
+for(let j=0; j<grade.length;j++){
+  average1 += grade[j];
+  average1 = average1/grade.length;
+}
+
+console.log(average1);
+console.log(learnName);
+console.log(grade); 
+console.log(assignmentTotal)
+
+const getData = {
+  id: []
+}
+
+getData['id'].push(learnName);
+  
+
+console.log(getData);
 
 
 
