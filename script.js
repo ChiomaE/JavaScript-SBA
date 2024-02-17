@@ -56,7 +56,7 @@ const CourseInfo = {
     ]
   };
 
-
+//LearnerSubmissions[i].submission.score
   const LearnerSubmissions = [
     {
       learner_id: 125,
@@ -103,12 +103,20 @@ const CourseInfo = {
 
   //find function will help a lot
 
-const result = [];
+const name = [];
+const assignment = [1,2,3];
+const grade = [];
+
 for(let i=0; i<LearnerSubmissions.length; i++){
-  result.push(LearnerSubmissions[i].learner_id);
+  name.push(LearnerSubmissions[i].learner_id);
+}
+for(let i=0; i<LearnerSubmissions.length; i++){
+  grade.push(LearnerSubmissions[i].submission.score);
 }
 
-console.log(result);
+
+console.log(name);
+console.log(grade);
 
 
 
