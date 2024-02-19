@@ -116,8 +116,8 @@ for(let i=0; i<AssignmentGroup.assignments.length; i++){
   assignmentTotal.push(AssignmentGroup.assignments[i].points_possible);
 }
 
-let average1 = 0;
-
+let learnerAverage1 = 0;
+let learnerAverage2 = 0;
 /* 
 learnName[i];
 
@@ -128,25 +128,58 @@ if(learnName[i] != 125){
 
 */
 
+console.log(grade); 
 for(let j=0; j<grade.length;j++){
-  average1 += grade[j];
-  average1 = average1/grade.length;
+  if(j >= 3){
+    //console.log("Average 2")
+    learnerAverage2 += grade[j]; 
+  } else {
+    learnerAverage1+= grade[j];
+    if(j === 2){
+      continue; // supposed to skip element 2, the assignment that is not due
+    }
+    //console.log(learnerAverage1)
+  
+  }
+
+  
+  
 }
+
+let pointPos= 0;
+for(let h=0; h<assignmentTotal.length;h++){
+    pointPos += assignmentTotal[h]; 
+}
+
+learnerAverage1 = learnerAverage1/grade.length;
+learnerAverage2 = learnerAverage2/2;
+
+console.log(learnerAverage1)
+console.log(learnerAverage2)
+
+console.log(assignmentTotal) 
+console.log(pointPos) 
+let student1AVG = (Math.round(pointPos/learnerAverage1)*10)
+let student2AVG = (Math.round(pointPos/learnerAverage2)*10)
+//let student2AVG = (pointPos/learnerAverage2)
+
+console.log(`Student 1 Average: %${student1AVG}`)
+console.log(`Student 2 Average: %${student2AVG}`)
+//console.log(student2AVG.toFixed)
+
+/* 
+
 
 console.log(average1);
 console.log(learnName);
-console.log(grade); 
-console.log(assignmentTotal)
 
-const getData = {
-  id: []
-}
+*/
 
-getData['id'].push(learnName);
-  
-
-console.log(getData);
-
+/* let getData = [
+]
+getData.push(average1);
+console.log(getData)
+ */
 
 
 
