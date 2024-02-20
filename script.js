@@ -97,135 +97,41 @@ const CourseInfo = {
     }
   ];
 
+  //Calculates weighted average
+function calculateWeightedAverage(assignments, submissions) {
+  let totalScore = 0;
+  let totalWeight = 0;
+  for(let assingment of assignmments) {
+    //finds the assignment id
+    const submission = submissions.find(sub=> subassignment_if === assignments.id);
 
+    //if submitted after due date, add penalty
+    if(submission && new Date(submission.submission.submitted _at) <= new Date(assingment.due_at)) {
+      const lateSubmission = new Date(submission.submission.submitted_at) > new Date(assignment.due_at);
+      const latePenalty;
 
-//pulling everything out of the arrays
+      if(lateSubmission){
+        latePenalty = 0.1;
+      } else {
+        latePenalty=0;
+      }
 
-const learnName = [];
-const assignment = [1,2,3];
-const grade = [];
-const assignmentTotal = []
-
-for(let i=0; i<LearnerSubmissions.length; i++){
-  learnName.push(LearnerSubmissions[i].learner_id);
-}
-for(let i=0; i<LearnerSubmissions.length; i++){
-  grade.push(LearnerSubmissions[i].submission.score);
-}
-for(let i=0; i<AssignmentGroup.assignments.length; i++){
-  assignmentTotal.push(AssignmentGroup.assignments[i].points_possible);
-}
-
-let learnerAverage1 = 0;
-let learnerAverage2 = 0;
-/* 
-learnName[i];
-
-if(learnName[i] != 125){
-  let average2 = 0
-  copy of code
-}
-
-*/
-
-console.log(grade); 
-for(let j=0; j<grade.length;j++){
-  if(j >= 3){
-    //console.log("Average 2")
-    learnerAverage2 += grade[j]; 
-  } else {
-    learnerAverage1+= grade[j];
-    if(j === 2){
-      continue; // supposed to skip element 2, the assignment that is not due
+      //late penalty added
+      const score  = submission.submission.score - (latePenalty*assignment.points_possible);
+      //weighted score
+      const weightedScore = (score/assingment.points_possible)*assingment.points_possible;
+      
+      totalScore+=weightedScore;
+      totalWeight += assingment.points_possible;
     }
-    //console.log(learnerAverage1)
-  
+
   }
 
-  
-  
-}
-
-let pointPos= 0;
-for(let h=0; h<assignmentTotal.length;h++){
-    pointPos += assignmentTotal[h]; 
-}
-
-learnerAverage1 = learnerAverage1/grade.length;
-learnerAverage2 = learnerAverage2/2;
-
-console.log(learnerAverage1)
-console.log(learnerAverage2)
-
-console.log(assignmentTotal) 
-console.log(pointPos) 
-let student1AVG = (Math.round(pointPos/learnerAverage1)*10)
-let student2AVG = (Math.round(pointPos/learnerAverage2)*10)
-//let student2AVG = (pointPos/learnerAverage2)
-
-console.log(`Student 1 Average: %${student1AVG}`)
-console.log(`Student 2 Average: %${student2AVG}`)
-//console.log(student2AVG.toFixed)
-
-/* 
-
-
-console.log(average1);
-console.log(learnName);
-
-*/
-
-/* let getData = [
-]
-getData.push(average1);
-console.log(getData)
- */
-
-
-
-/* function getLearnerData(CourseInfo, AssignmentGroup, [LearnerSubmissions]) {
-
-    
-
-
-    return result;
-} */
-
-
-  //learner's total scores
-  const learnerAverage = {
-    "id": 0, //number
-    "avg": 0,
-    "assignment id": 0
+  //avaoid division by 0
+  if (totalWeight === 0){
+    return 0;
   }
-  
 
-  // console.log(`Submission Data:`, submissions );
+  return(totalScore/totalWeight) *100;
 
-
-
-//need to output console.log(obj.id, obj.avg, obj.assignmentid);
-/* Example answers 
-
-const result = [
-    {
-      id: 125,
-      avg: 0.985, // (47 + 150) / (50 + 150)
-      1: 0.94, // 47 / 50
-      2: 1.0 // 150 / 150
-    },
-    {
-      id: 132,
-      avg: 0.82, // (39 + 125) / (50 + 150)
-      1: 0.78, // 39 / 50
-      2: 0.833 // late: (140 - 15) / 150
-    }
-  ]; 
-  
-  */
-// Parse submission data.
-// console.log(`Submission Data:`, submissions );
-// Check to see if the submission was late; if so, deduct 10% of the maximum possible points.
-// Find existing data for this learner, if any.
-// If the learner already has data, add the new score to the existing data.
-// Calculate the average score for each learner and remove the extra data.
+}
