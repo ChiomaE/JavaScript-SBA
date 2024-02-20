@@ -120,7 +120,7 @@ function calculateWeightedAverage(assignments, submissions) {
       const score  = submission.submission.score - (latePenalty*assignment.points_possible);
       //weighted score
       const weightedScore = (score/assingment.points_possible)*assingment.points_possible;
-      
+
       totalScore+=weightedScore;
       totalWeight += assingment.points_possible;
     }
@@ -133,5 +133,56 @@ function calculateWeightedAverage(assignments, submissions) {
   }
 
   return(totalScore/totalWeight) *100;
+
+}
+
+function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
+  //verify the assignment is for the right course
+  if(AssignmentGroup.course_id != CourseInfo.id){
+    throw console.error("Assignment does not belong to this course");
+  }
+
+  //final information to be stored here
+  const learnerData = [];
+
+
+  /*
+  Create a new set that holds:
+  -> Learner Id
+  -> weighted average(calls function that calculates the average based on parameters) 
+  map function allows the set to be stored in key value pairs
+  filter function  creates array of just the learner id
+   */
+
+  for(const learnerID of [...new Set(LearnerSubmissions.map(sub => sub.learner_id))]) {
+    const learnerSubs = LearnerSubmissions.filter(sub => sub.learner_id === learnerID);
+    const avg = calculateWeightedAverage(AssignmentGroup.assignments, learnerSubs); //learnerSubs passes the date submitted as a parameter to calculatedWeightedAverage function, function returns value to avg
+
+    const learner = {
+      id:learnerID,
+      avg: avg
+    }
+
+    for (const submission of learnerSubs) {
+      //finds the assignment using the assignment id
+      const assignment = AssignmentGroup.assignments.find(a => a.id === submission.assignment_id);
+
+      //checks if the assignment is due
+      if(assignment && new Date(submission.submission.submitted_at) <= new Date(assingment.due_at)) {
+        //assignmentScore = learner score/ total possible points *100 (returns in percentage format)
+        const assignmentScore = (submission.submission.score / assignment.points_possible) * 100;
+
+        //assignment score stored in learner object
+        learner[assignment.id] = assignmentScore;
+      }
+    }
+  
+
+    learnerData.push(learner);
+  }
+
+  // pushes information to learnerData array
+  return learnerData;
+
 
 }
