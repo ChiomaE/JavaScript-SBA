@@ -101,20 +101,14 @@ const CourseInfo = {
 function calculateWeightedAverage(assignments, submissions) {
   let totalScore = 0;
   let totalWeight = 0;
-  for(let assingment of assignmments) {
+  for(let assingment of assignments) {
     //finds the assignment id
-    const submission = submissions.find(sub=> subassignment_if === assignments.id);
+    const submission = submissions.find(sub => sub.assignment_id === assignments.id);
 
     //if submitted after due date, add penalty
-    if(submission && new Date(submission.submission.submitted _at) <= new Date(assingment.due_at)) {
+    if(submission && new Date(submission.submission.submitted_at) <= new Date(assingment.due_at)) {
       const lateSubmission = new Date(submission.submission.submitted_at) > new Date(assignment.due_at);
-      const latePenalty;
-
-      if(lateSubmission){
-        latePenalty = 0.1;
-      } else {
-        latePenalty=0;
-      }
+      const latePenalty = lateSubmission ? 0.1 : 0;
 
       //late penalty added
       const score  = submission.submission.score - (latePenalty*assignment.points_possible);
@@ -168,13 +162,15 @@ function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
       const assignment = AssignmentGroup.assignments.find(a => a.id === submission.assignment_id);
 
       //checks if the assignment is due
-      if(assignment && new Date(submission.submission.submitted_at) <= new Date(assingment.due_at)) {
-        //assignmentScore = learner score/ total possible points *100 (returns in percentage format)
+
+      if (assignment && new Date(submission.submission.submitted_at) <= new Date(assignment.due_at)) {
+        //assignmentScore = learner score/ total possible points *100 (returns in grade format)
         const assignmentScore = (submission.submission.score / assignment.points_possible) * 100;
 
         //assignment score stored in learner object
         learner[assignment.id] = assignmentScore;
-      }
+    }
+    
     }
   
 
@@ -183,6 +179,10 @@ function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
 
   // pushes information to learnerData array
   return learnerData;
-
-
 }
+
+//call getLearnerData function, passing data as parameters
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+
+//log result array 
+console.log(result);
